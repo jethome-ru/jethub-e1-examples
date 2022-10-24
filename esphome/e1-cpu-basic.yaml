@@ -1,0 +1,107 @@
+esphome:
+  name: e1-cpu-basic
+  platform: ESP32
+  board: nodemcu-32s
+
+## WARNING: Disable WiFi and captive_portal if Ethernet enabled
+#wifi:
+#  ssid: "***"
+#  password: "***"
+#
+#  # Enable fallback hotspot (captive portal) in case wifi connection fails
+#  ap:
+#    ssid: "JetHub E1 Fallback Hotspot"
+#    password: "wDZE2YhcmW89"
+#
+#captive_portal:
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Enable OTA firmware update
+ota:
+
+# Enable Ethernet
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 1
+
+# Enable I2C bus
+i2c:
+  sda: 5
+  scl: 4
+  frequency: 400kHz
+  scan: true
+  id: i2c1
+
+# Enable UART1, UART2
+uart:
+  - tx_pin: 33
+    rx_pin: 34
+    baud_rate: 115200
+    id: uart1
+  - tx_pin: 2
+    rx_pin: 39
+    baud_rate: 115200
+    id: uart2
+
+# Enable SPI bus
+spi:
+  clk_pin: 14
+  mosi_pin: 13
+  miso_pin: 12
+  id: spi1
+
+# Enable CAN bus
+canbus:
+  - platform: esp32_can
+    id: can1
+    tx_pin: 32
+    rx_pin: 15
+    can_id: 1
+    bit_rate: 125KBPS
+
+# Enable I2C GPIO expanders
+pcf8574:
+  - id: cpu_gpio_exp
+    address: 0x20
+    pcf8575: true
+
+# Enable LEDs
+switch:
+  - platform: gpio
+    name: "Red LED"
+    id: red_led
+    pin:
+      pcf8574: cpu_gpio_exp
+      number: 0
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Green LED"
+    id: green_led
+    pin:
+      pcf8574: cpu_gpio_exp
+      number: 1
+      mode: OUTPUT
+      inverted: true
+
+# Enable button
+binary_sensor:
+  - platform: gpio
+    name: "FN button"
+    pin:
+      number: 0
+      inverted: true
+  - platform: gpio
+    name: "USER button"
+    pin:
+      pcf8574: cpu_gpio_exp
+      number: 2
+      inverted: true
