@@ -2,6 +2,7 @@ esphome:
   name: e1-cpu-basic
   platform: ESP32
   board: nodemcu-32s
+  name_add_mac_suffix: true # This option adds MAC address to the end of the device name
 
 ## WARNING: Disable WiFi and captive_portal if Ethernet enabled
 #wifi:
