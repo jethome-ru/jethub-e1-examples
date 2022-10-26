@@ -15,6 +15,14 @@ esphome:
 #
 #captive_portal:
 
+# Enable Ethernet
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 1
+
 # Enable logging
 logger:
 
@@ -23,14 +31,6 @@ api:
 
 # Enable OTA firmware update
 ota:
-
-# Enable Ethernet
-ethernet:
-  type: LAN8720
-  mdc_pin: GPIO23
-  mdio_pin: GPIO18
-  clk_mode: GPIO17_OUT
-  phy_addr: 1
 
 # Enable I2C bus
 i2c:
