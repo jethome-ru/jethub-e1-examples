@@ -1,0 +1,171 @@
+esphome:
+  name: e1-pd76-r5
+  platform: ESP32
+  board: nodemcu-32s
+  name_add_mac_suffix: true # This option adds MAC address to the end of the device name
+
+## WARNING: Disable WiFi and captive_portal if Ethernet enabled
+#wifi:
+#  ssid: "***"
+#  password: "***"
+#
+#  # Enable fallback hotspot (captive portal) in case wifi connection fails
+#  ap:
+#    ssid: "JetHub E1 Fallback Hotspot"
+#    password: "wDZE2YhcmW89"
+#
+#captive_portal:
+
+# Enable Ethernet
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO17_OUT
+  phy_addr: 1
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+# Enable OTA firmware update
+ota:
+
+# Enable I2C bus
+i2c:
+  sda: 5
+  scl: 4
+  frequency: 400kHz
+  scan: true
+  id: i2c1
+
+# Enable UART1
+uart:
+  - tx_pin: 33
+    rx_pin: 34
+    baud_rate: 115200
+    id: uart1
+
+# Enable I2C GPIO expanders
+pcf8574:
+  - id: cpu_gpio_exp
+    address: 0x20
+    pcf8575: true
+  - id: mb_gpio_exp
+    address: 0x22
+    pcf8575: true
+
+# Enable digital outputs: LEDs and relays
+switch:
+  - platform: gpio
+    name: "Red LED"
+    id: red_led
+    pin:
+      pcf8574: cpu_gpio_exp
+      number: 0
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Green LED"
+    id: green_led
+    pin:
+      pcf8574: cpu_gpio_exp
+      number: 1
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Relay 1"
+    id: relay_1
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 8
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Relay 2"
+    id: relay_2
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 9
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Relay 3"
+    id: relay_3
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 10
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Relay 4"
+    id: relay_4
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 11
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "Relay 5"
+    id: relay_5
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 12
+      mode: OUTPUT
+      inverted: true
+
+# Enable inputs: button and discrete inputs
+binary_sensor:
+  - platform: gpio
+    name: "FN button"
+    pin:
+      number: 0
+      inverted: true
+  - platform: gpio
+    name: "Input 1"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 0
+      inverted: false
+  - platform: gpio
+    name: "Input 2"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 1
+      inverted: false
+  - platform: gpio
+    name: "Input 3"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 2
+      inverted: false
+  - platform: gpio
+    name: "Input 4"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 3
+      inverted: false
+  - platform: gpio
+    name: "Input 5"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 4
+      inverted: false
+  - platform: gpio
+    name: "Input 6"
+    pin:
+      pcf8574: mb_gpio_exp
+      number: 5
+      inverted: false
+
+# Enable 1-Wire bus on external connector
+dallas:
+  - pin: 16
+
+## Configure individual sensors
+#sensor:
+#  - platform: dallas
+#    address: 0x1c0000031edd2a28
+#    name: "Livingroom Temperature"
